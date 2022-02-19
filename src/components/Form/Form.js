@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import shortid from 'shortid';
 import { useDispatch, useSelector } from 'react-redux';
-import { getItems } from '../../redux/contacts/contacts-selectors';
-import { onSubmitHandler } from '../../redux/contacts/contacts-operations';
+import { getItems } from 'redux/contacts/contacts-selectors';
+import { onSubmitHandler } from 'redux/contacts/contacts-operations';
 import s from './Form.module.css';
 
 const Form = () => {

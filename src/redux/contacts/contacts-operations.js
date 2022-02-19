@@ -9,42 +9,36 @@ import {
   fetchContactsRequest,
   fetchContactsSuccess,
   fetchContactsError,
-} from './contacts-actions';
+} from 'redux/contacts/contacts-actions';
 
 axios.defaults.baseURL = 'https://61ba064d48df2f0017e5a8a4.mockapi.io/';
 
-// Asynchronous option:
-// export const fetchContacts = () => async dispatch => {
-//   dispatch(fetchContactsRequest());
-
-//   try {
-//     const { data } = await axios.get('/contacts');
-//     dispatch(fetchContactsSuccess(data));
-//   } catch (error) {
-//     dispatch(fetchContactsError(error));
-//   }
-// };
-
-export const fetchContacts = () => dispatch => {
+export const fetchContacts = () => async dispatch => {
   dispatch(fetchContactsRequest());
-  axios
-    .get('/contacts')
-    .then(({ data }) => dispatch(fetchContactsSuccess(data)))
-    .catch(error => dispatch(fetchContactsError(error)));
+  try {
+    const { data } = await axios.get('/contacts');
+    dispatch(fetchContactsSuccess(data));
+  } catch (error) {
+    dispatch(fetchContactsError(error));
+  }
 };
 
-export const onSubmitHandler = contact => dispatch => {
+export const onSubmitHandler = contact => async dispatch => {
   dispatch(onSubmitHandlerRequest());
-  axios
-    .post('/contacts', contact)
-    .then(({ data }) => dispatch(onSubmitHandlerSuccess(data)))
-    .catch(error => dispatch(onSubmitHandlerError(error)));
+  try {
+    const { data } = await axios.post('/contacts', contact);
+    dispatch(onSubmitHandlerSuccess(data));
+  } catch (error) {
+    dispatch(onSubmitHandlerError(error));
+  }
 };
 
-export const deleteContact = id => dispatch => {
+export const deleteContact = id => async dispatch => {
   dispatch(deleteContactRequest());
-  axios
-    .delete(`/contacts/${id}`)
-    .then(() => dispatch(deleteContactSuccess(id)))
-    .catch(error => dispatch(deleteContactError(error)));
+  try {
+    await axios.delete(`/contacts/${id}`);
+    dispatch(deleteContactSuccess(id));
+  } catch (error) {
+    dispatch(deleteContactError(error));
+  }
 };

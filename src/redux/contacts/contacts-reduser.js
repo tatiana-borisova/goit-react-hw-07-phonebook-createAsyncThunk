@@ -1,47 +1,41 @@
 import { combineReducers } from 'redux';
 import { createReducer } from '@reduxjs/toolkit';
+import { onChangeFilter } from 'redux/contacts/contacts-actions';
 import {
-  fetchContactsRequest,
-  fetchContactsSuccess,
-  fetchContactsError,
-  onSubmitHandlerRequest,
-  onSubmitHandlerSuccess,
-  onSubmitHandlerError,
-  deleteContactRequest,
-  deleteContactSuccess,
-  deleteContactError,
-  onChangeFilter,
-} from 'redux/contacts/contacts-actions';
+  fetchContacts,
+  onSubmitHandler,
+  deleteContact,
+} from 'redux/contacts/contacts-operations';
 
 const items = createReducer([], {
-  [fetchContactsSuccess]: (_, { payload }) => payload,
-  [onSubmitHandlerSuccess]: (state, { payload }) => [...state, payload],
-  [deleteContactSuccess]: (state, { payload }) =>
-    state.filter(({ id }) => id !== payload),
+  [fetchContacts.fulfilled]: (_, action) => action.payload,
+  [onSubmitHandler.fulfilled]: (state, action) => [...state, action.payload],
+  [deleteContact.fulfilled]: (state, action) =>
+    state.filter(({ id }) => id !== action.payload),
 });
 
 const filter = createReducer('', {
-  [onChangeFilter]: (_, { payload }) => payload,
+  [onChangeFilter]: (_, action) => action.payload,
 });
 
 const loading = createReducer(false, {
-  [fetchContactsRequest]: () => true,
-  [fetchContactsSuccess]: () => false,
-  [fetchContactsError]: () => false,
+  [fetchContacts.pending]: () => true,
+  [fetchContacts.fulfilled]: () => false,
+  [fetchContacts.rejected]: () => false,
 
-  [onSubmitHandlerRequest]: () => true,
-  [onSubmitHandlerSuccess]: () => false,
-  [onSubmitHandlerError]: () => false,
+  [onSubmitHandler.pending]: () => true,
+  [onSubmitHandler.fulfilled]: () => false,
+  [onSubmitHandler.rejected]: () => false,
 
-  [deleteContactRequest]: () => true,
-  [deleteContactSuccess]: () => false,
-  [deleteContactError]: () => false,
+  [deleteContact.pending]: () => true,
+  [deleteContact.fulfilled]: () => false,
+  [deleteContact.rejected]: () => false,
 });
 
 const error = createReducer(null, {
-  [fetchContactsError]: error => console.log(error),
-  [onSubmitHandlerError]: error => console.log(error),
-  [deleteContactError]: error => console.log(error),
+  [fetchContacts.rejected]: error => console.log(error),
+  [onSubmitHandler.rejected]: error => console.log(error),
+  [deleteContact.rejected]: error => console.log(error),
 });
 
 export default combineReducers({

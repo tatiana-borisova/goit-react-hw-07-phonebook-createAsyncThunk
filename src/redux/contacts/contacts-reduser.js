@@ -1,5 +1,4 @@
-import { combineReducers } from 'redux';
-import { createReducer } from '@reduxjs/toolkit';
+import { createReducer, combineReducers } from '@reduxjs/toolkit';
 import { onChangeFilter } from 'redux/contacts/contacts-actions';
 import {
   fetchContacts,
@@ -34,8 +33,11 @@ const loading = createReducer(false, {
 
 const error = createReducer(null, {
   [fetchContacts.rejected]: error => console.log(error),
+  [fetchContacts.pending]: () => null,
   [onSubmitHandler.rejected]: error => console.log(error),
+  [onSubmitHandler.pending]: () => null,
   [deleteContact.rejected]: error => console.log(error),
+  [deleteContact.pending]: () => null,
 });
 
 export default combineReducers({

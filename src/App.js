@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Puff } from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { getLoading } from 'redux/contacts/contacts-selectors';
@@ -16,7 +18,7 @@ const App = () => {
   useEffect(() => dispatch(fetchContacts()), [dispatch]);
 
   return (
-    <div>
+    <>
       <Section title="Phonebook">
         <Form />
       </Section>
@@ -30,7 +32,8 @@ const App = () => {
           </div>
         )}
       </Section>
-    </div>
+      <ToastContainer position="top-right" autoClose={3000} />
+    </>
   );
 };
 

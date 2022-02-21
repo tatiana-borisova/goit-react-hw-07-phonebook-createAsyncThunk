@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import shortid from 'shortid';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { getItems } from 'redux/contacts/contacts-selectors';
 import { onSubmitHandler } from 'redux/contacts/contacts-operations';
 import s from './Form.module.css';
@@ -28,13 +29,16 @@ const Form = () => {
       contact => contact.number.toLowerCase() === number.toLowerCase(),
     );
 
-    isNameHere || isNumberHere
-      ? alert(
-          `${isNameHere ? name : ''} ${
-            isNumberHere ? number : ''
-          } is already in contacts`,
-        )
-      : dispatch(onSubmitHandler({ id: shortid.generate(), name, number }));
+    if (isNameHere || isNumberHere) {
+      alert(
+        `${isNameHere ? name : ''} ${
+          isNumberHere ? number : ''
+        } is already in contacts`,
+      );
+    } else {
+      dispatch(onSubmitHandler({ id: shortid.generate(), name, number }));
+      toast.success('Contact was added!');
+    }
 
     setName('');
     setNumber('');
